@@ -6,7 +6,7 @@
 
 {
     'name': 'Product Category Image',
-    'version': '10.0.1.0.0',
+    'version': '12.0.1.0.0',
     'category': 'Sales',
     'license': 'AGPL-3',
     'summary': 'Add image on product category',
