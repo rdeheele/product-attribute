@@ -32,7 +32,6 @@ class ProductProduct(models.Model):
         store=False,
     )
 
-    @api.multi
     def _inverse_main_image(self, image):
         for product in self:
             has_images = bool(product.image_ids)
@@ -49,22 +48,18 @@ class ProductProduct(models.Model):
                 if has_images:
                     product.image_ids = [(3, product.image_ids[0].id)]
 
-    @api.multi
     def _inverse_main_image_large(self):
         for product in self:
             product._inverse_main_image(product.image_main)
 
-    @api.multi
     def _inverse_main_image_medium(self):
         for product in self:
             product._inverse_main_image(product.image_main_medium)
 
-    @api.multi
     def _inverse_main_image_small(self):
         for product in self:
             product._inverse_main_image(product.image_main_small)
 
-    @api.multi
     @api.depends('product_tmpl_id', 'product_tmpl_id.image_ids',
                  'product_tmpl_id.image_ids.product_variant_ids')
     def _compute_image_ids(self):
@@ -74,7 +69,6 @@ class ProductProduct(models.Model):
                            product.id in x.product_variant_ids.ids))
             product.image_ids = [(6, 0, images.ids)]
 
-    @api.multi
     def _inverse_image_ids(self):
         for product in self:
             # Remember the list of images that were before changes
@@ -106,14 +100,12 @@ class ProductProduct(models.Model):
                     # Leave the images for the rest of the variants
                     image.product_variant_ids = [(6, 0, variants.ids)]
 
-    @api.multi
     @api.depends('image_ids', 'product_tmpl_id.image_ids',
                  'product_tmpl_id.image_ids.product_variant_ids')
     def _get_multi_image(self):
         """Needed for changing dependencies in this class."""
         super(ProductProduct, self)._get_multi_image()
 
-    @api.multi
     def unlink(self):
         obj = self.with_context(bypass_image_removal=True)
         # Remove images that are linked only to the product variant

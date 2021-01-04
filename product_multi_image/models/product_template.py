@@ -23,7 +23,6 @@ class ProductTemplate(models.Model):
         store=False,
     )
 
-    @api.multi
     def write(self, vals):
         if set(['image', 'image_medium', 'image_small']) & set(vals.keys()):
             # medium/small image is saved as large
@@ -38,13 +37,11 @@ class ProductTemplate(models.Model):
                 del vals['image_small']
         return super(ProductTemplate, self).write(vals)
 
-    @api.multi
     def _set_multi_image_main_medium(self):
         # on save product module resizes large image to medium
         # medium image should not overwrite the large
         pass
 
-    @api.multi
     def _set_multi_image_main_small(self):
         # on save product module resizes large image to small
         # small image should not overwrite the large
